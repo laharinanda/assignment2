@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sheetrock/1.1.4/dist/sheetrock.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
+
+<style>
+
+
+
+  .clearfix {
+    overflow:auto;
+    position: relative;
+    text-align: center;
+    color: white;
+    font-size: 50px;
+
+  }
+
+/* centered text */
+  .centered {
+    position: absolute;
+    top: 55%;
+    left: 7%;
+    transform: (-50%, -50%);
+    color: white;
+  }
+
+
+  .display {
+    display: flex;
+  }
+
+  .display map {
+    flex: 1;
+  }
+
+  .display form {
+    flex: 1;
+  }
+
+  .clearfix2 {
+    clear:both;
+  }
+
+
+  mark {
+    color: white;
+    background-color: black;
+  }
+
+
+</style>
+
+  </head>
+  <body>
+    <table>
+<tr>
+
+      <div class="clearfix">
+        <img src="banner.png" width="100%">
+        <div class ="centered"> <mark> Biryani Blues in Bhubaneswar </mark> </div>
+      </div>
+
+
+</tr>
+
+
+    </table>
+
+    <table class="holdtable">
+
+    </table>
+
+<div class="display">
+<td>
+
+    <div id='map' style='width: 50%; height: 500px;'></div>
+
+</td>
+
+<td>
+  <div class="form">
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSexCjkpTMWCpakyh-FZ5rXc3gzYZBlR681dStwQoNaZYd_b0Q/viewform?embedded=true" width="600" height="1000" frameborder="0">Loading…</iframe>
+  </div>
+</td>
+</div>
+
+<div class ="clearfix2"> </div>
+
+    <script type="text/javascript">
+      /*Initialize Map*/
+      mapboxgl.accessToken = 'pk.eyJ1IjoibGFoYXJpbmFuZGEiLCJhIjoiY2tnZ2FseWUzMXNodjJzczV4cmFkaDBkOCJ9.KEYsDCDni0jL4veezXYxEQ';
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/laharinanda/ckih27j6f2epi1ao74wla2k05', // stylesheet location
+        center: [85.80781, 20.27395], // starting position [lng, lat]
+        zoom: 10.81
+
+      });
+
+      /*SheetRock*/
+      // Define spreadsheet URL.
+      var mySpreadsheet = 'https://docs.google.com/spreadsheets/d/12Uw2qU6iM8tNjVsKIA7Kd4MjjFDf8ZJqBQpF7tX00ww/edit?usp=sharing';
+      // Load an entire worksheet.
+      /*$(".holdtable").sheetrock({
+        url: mySpreadsheet
+      });*/
+
+
+
+      sheetrock({
+        url: mySpreadsheet,
+        callback: draw
+      });
+
+      function draw(error, options, response) {
+        //alert("Here");
+        data=response.rows;
+        console.log(response);
+        for(i in data){
+          if(i>1){
+            console.log(data[i].cellsArray[2])
+            var marker = new mapboxgl.Marker()
+              .setLngLat([data[i].cellsArray[5], data[i].cellsArray[6]])
+              .setPopup(new mapboxgl.Popup().setHTML("<h2>Location:</h2>"+ data[i].cellsArray[2] + "<p><h2>Type of Biryani:</h2>" + data[i].cellsArray[3]))
+              .addTo(map);
+          }
+        }
+      }
+    </script>
+
+    <table
+  </body>
+</html>
